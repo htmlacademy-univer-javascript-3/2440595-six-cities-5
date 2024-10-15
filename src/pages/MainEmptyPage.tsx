@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function MainPageEmpty(): React.JSX.Element {
+export function MainEmptyPage(): React.JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
