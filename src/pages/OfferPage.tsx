@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function Offer(): React.JSX.Element {
+export function OfferPage(): React.JSX.Element {
   return (
     <div className="page">
       <header className="header">

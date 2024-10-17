@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function FavoritesEmpty(): React.JSX.Element {
+export function FavoritesEmptyPage(): React.JSX.Element {
   return (
     <div className="page page--favorites-empty">
       <header className="header">

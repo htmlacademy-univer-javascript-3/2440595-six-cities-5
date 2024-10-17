@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function OfferNotLogged(): React.JSX.Element {
+export function OfferNotLoggedPage(): React.JSX.Element {
   return (
     <div className="page">
       <header className="header">
