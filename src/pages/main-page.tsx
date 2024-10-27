@@ -1,18 +1,20 @@
 import React from 'react';
-import { PlaceCard } from '../components/PlaceCard.tsx';
-import {PlaceType} from '../internal/enums/PlaceTypeEnum.tsx';
-import { MainPageProps } from '../props/MainPageProps.ts';
+import { MainPageProps } from '../props/main-page-props.tsx';
+import { Link } from 'react-router-dom';
+import { OffersList } from '../components/offers-list.tsx';
 
-export function MainPage({placeCount}: MainPageProps): React.JSX.Element {
+export function MainPage({placeCount, offers}: MainPageProps): React.JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link header__logo-link--active">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-              </a>
+              <Link to='/' className="header__logo-link header__logo-link--active">
+                <a className="header__logo-link header__logo-link--active">
+                  <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
+                </a>
+              </Link>
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
@@ -82,7 +84,7 @@ export function MainPage({placeCount}: MainPageProps): React.JSX.Element {
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
                   Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
+                  <svg className="places__sorting-arrow" width="7" height="4">f
                     <use xlinkHref="#icon-arrow-select"></use>
                   </svg>
                 </span>
@@ -94,11 +96,7 @@ export function MainPage({placeCount}: MainPageProps): React.JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <PlaceCard image="room.jpg" price={80} description="some description" rating="100%" type={PlaceType.Room} isInBookmarks/>
-                <PlaceCard image="room.jpg" price={80} description="some description" rating="100%" type={PlaceType.Room} isInBookmarks/>
-                <PlaceCard image="room.jpg" price={80} description="some description" rating="100%" type={PlaceType.Room} isInBookmarks/>
-                <PlaceCard image="room.jpg" price={80} description="some description" rating="100%" type={PlaceType.Room} isInBookmarks/>
-                <PlaceCard image="room.jpg" price={80} description="some description" rating="100%" type={PlaceType.Room} isInBookmarks/>
+                <OffersList offers={offers} />
               </div>
             </section>
             <div className="cities__right-section">
