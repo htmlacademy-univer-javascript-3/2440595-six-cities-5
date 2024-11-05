@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { AppRoutesProps } from '../props/AppRoutesProps.tsx';
+import { AppRoutesProps } from '../props/app-routes-props.tsx';
 
 interface AuthorizationProps {
   isAuthorized: boolean;

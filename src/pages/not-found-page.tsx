@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { AppRoutesProps } from '../props/AppRoutesProps.tsx';
+import { AppRoutesProps } from '../props/app-routes-props.tsx';
 
 export function NotFoundPage(): React.JSX.Element {
   return (
