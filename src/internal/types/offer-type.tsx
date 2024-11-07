@@ -10,4 +10,12 @@ export type Offer = {
   isPremium: boolean;
   isBookmarked: boolean;
   isFavorite: boolean;
+  city: {
+    name: string;
+    location: {
+      lat: number;
+      lon: number;
+      zoom: number;
+    };
+  };
 };

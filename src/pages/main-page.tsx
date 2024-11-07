@@ -1,7 +1,8 @@
 import React from 'react';
 import { MainPageProps } from '../props/main-page-props.tsx';
-import { Link } from 'react-router-dom';
 import { OffersList } from '../components/offers-list.tsx';
+import { Map } from '../components/map.tsx';
+import { Logo } from '../components/logo.tsx';
 
 export function MainPage({placeCount, offers}: MainPageProps): React.JSX.Element {
   return (
@@ -10,11 +11,7 @@ export function MainPage({placeCount, offers}: MainPageProps): React.JSX.Element
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <Link to='/' className="header__logo-link header__logo-link--active">
-                <a className="header__logo-link header__logo-link--active">
-                  <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-                </a>
-              </Link>
+              <Logo />
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
@@ -100,7 +97,9 @@ export function MainPage({placeCount, offers}: MainPageProps): React.JSX.Element
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map offers={offers} selectedOffer={offers[0]} />
+              </section>
             </div>
           </div>
         </div>
