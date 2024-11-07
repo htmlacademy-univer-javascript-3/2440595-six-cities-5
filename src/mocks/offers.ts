@@ -12,6 +12,14 @@ export const offers: Offer[] = [
     isPremium: true,
     isBookmarked: true,
     isFavorite: true,
+    city: {
+      name: 'Amsterdam',
+      location: {
+        lat: 52.3909553943508,
+        lon: 4.85309666406198,
+        zoom: 100
+      },
+    },
   },
   {
     id: 222222,
@@ -23,6 +31,14 @@ export const offers: Offer[] = [
     isPremium: true,
     isBookmarked: true,
     isFavorite: true,
+    city: {
+      name: 'Amsterdam',
+      location: {
+        lat: 52.3609553943508,
+        lon: 4.85309666406198,
+        zoom: 100
+      },
+    },
   },
   {
     id: 333333,
@@ -34,6 +50,14 @@ export const offers: Offer[] = [
     isPremium: true,
     isBookmarked: true,
     isFavorite: true,
+    city: {
+      name: 'Amsterdam',
+      location: {
+        lat: 52.3909553943508,
+        lon: 4.929309666406198,
+        zoom: 100
+      },
+    },
   },
   {
     id: 444444,
@@ -45,5 +69,13 @@ export const offers: Offer[] = [
     isPremium: true,
     isBookmarked: true,
     isFavorite: true,
+    city: {
+      name: 'Amsterdam',
+      location: {
+        lat: 52.3809553943508,
+        lon: 4.939309666406198,
+        zoom: 100
+      },
+    },
   },
 ];
