@@ -7,7 +7,7 @@ export function OffersList({ offers, listType, setActiveOfferId }: OffersListPro
   return (
     <div className={`${additionalClass} ${baseClass}`}>
       {offers.map((offer) => (
-        <PlaceCard key={offer.id} offer={offer} cardType={listType} setActiveOfferId={setActiveOfferId}/>
+        <PlaceCard key={offer.id} offer={offer} type={listType} setActiveOfferId={setActiveOfferId}/>
       ))}
     </div>
   );
