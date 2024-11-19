@@ -1,4 +1,5 @@
-import {PlaceType} from '../enums/place-type-enum.tsx';
+import { PlaceType } from '../enums/place-type-enum.tsx';
+import { CityName } from '../enums/city-name-enum.tsx';
 
 export type Offer = {
   id: number;
@@ -11,7 +12,7 @@ export type Offer = {
   isBookmarked: boolean;
   isFavorite: boolean;
   city: {
-    name: string;
+    name: CityName;
     location: {
       lat: number;
       lon: number;

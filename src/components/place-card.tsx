@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
 import { PlaceCardProps } from '../props/place-card-props.tsx';
 import {Link} from 'react-router-dom';
 
-export function PlaceCard({offer}: PlaceCardProps): React.JSX.Element {
-  const [, setActive] = useState('');
+export function PlaceCard({ offer, type, setActiveOfferId}: PlaceCardProps): React.JSX.Element {
+  const placeCardClass = type === 'default' ? 'cities__card place-card' : 'near-places__card place-card';
+  const handleMouseEnter = () => {
+    if (setActiveOfferId) {
+      setActiveOfferId(offer.id);
+    }
+  };
+  const handleMouseLeave = () => {
+    if (setActiveOfferId) {
+      setActiveOfferId(0);
+    }
+  };
   return (
-    <article
-      className="cities__card place-card"
-      onMouseOver={() => setActive(offer.id.toString())}
-    >
+    <article className={`${placeCardClass}`} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       {offer.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
@@ -43,7 +49,7 @@ export function PlaceCard({offer}: PlaceCardProps): React.JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${(offer.rating / 5) * 100}%` }}></span>
+            <span style={{width: `${(offer.rating / 5) * 100}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

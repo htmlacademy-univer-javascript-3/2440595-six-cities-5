@@ -3,8 +3,21 @@ import { MainPageProps } from '../props/main-page-props.tsx';
 import { OffersList } from '../components/offers-list.tsx';
 import { Map } from '../components/map.tsx';
 import { Logo } from '../components/logo.tsx';
+import { useState, useEffect } from 'react';
+import {useAppSelector} from '../store/hooks.ts';
+import {Offer} from '../internal/types/offer-type.tsx';
+import {CityList} from '../components/city-list.tsx';
+import {Cities} from '../const.ts';
 
-export function MainPage({placeCount, offers}: MainPageProps): React.JSX.Element {
+export function MainPage({favorites}: MainPageProps): React.JSX.Element {
+  const [activeOfferId, setActiveOfferId] = useState(0);
+  const offers = useAppSelector((state) => state.offers);
+  const city = useAppSelector((state) => state.city);
+  const [currentCityOffers, setCurrentCityOffers] = useState<Offer[]>(offers);
+  useEffect(() => {
+    const filteredOffers = offers.filter((offer) => offer.city.name === city.name);
+    setCurrentCityOffers(filteredOffers);
+  }, [city, offers]);
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -20,7 +33,7 @@ export function MainPage({placeCount, offers}: MainPageProps): React.JSX.Element
                     <div className="header__avatar-wrapper user__avatar-wrapper">
                     </div>
                     <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
+                    <span className="header__favorite-count">{favorites.length}</span>
                   </a>
                 </li>
                 <li className="header__nav-item">
@@ -38,45 +51,14 @@ export function MainPage({placeCount, offers}: MainPageProps): React.JSX.Element
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
+            <CityList cities={Cities} />
           </section>
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{placeCount} places to stay in Amsterdam</b>
+              <b className="places__found">{`${currentCityOffers.length} places to stay in ${city.name}`}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -92,13 +74,11 @@ export function MainPage({placeCount, offers}: MainPageProps): React.JSX.Element
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                <OffersList offers={offers} />
-              </div>
+              <OffersList offers={currentCityOffers} listType={'default'} setActiveOfferId={setActiveOfferId}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map offers={offers} selectedOffer={offers[0]} />
+                <Map city={city} points={currentCityOffers} activeOfferId={activeOfferId} isMainPage/>
               </section>
             </div>
           </div>

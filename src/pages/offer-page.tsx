@@ -1,8 +1,12 @@
 import React from 'react';
 import { CommentForm } from '../components/comment-form.tsx';
 import { Logo } from '../components/logo.tsx';
+import {OfferPageProps} from '../props/offer-page-props.tsx';
+import {ReviewList} from '../components/review-list.tsx';
+import {Map} from '../components/map.tsx';
+import {offers} from '../mocks/offers.ts';
 
-export function OfferPage(): React.JSX.Element {
+export function OfferPage({reviews}: OfferPageProps): React.JSX.Element {
   return (
     <div className="page">
       <header className="header">
@@ -154,37 +158,17 @@ export function OfferPage(): React.JSX.Element {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
-                <ul className="reviews__list">
-                  <li className="reviews__item">
-                    <div className="reviews__user user">
-                      <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                        <img className="reviews__avatar user__avatar" src="img/avatar-max.jpg" width="54" height="54" alt="Reviews avatar"/>
-                      </div>
-                      <span className="reviews__user-name">
-                        Max
-                      </span>
-                    </div>
-                    <div className="reviews__info">
-                      <div className="reviews__rating rating">
-                        <div className="reviews__stars rating__stars">
-                          <span style={{width: '80%'}}></span>
-                          <span className="visually-hidden">Rating</span>
-                        </div>
-                      </div>
-                      <p className="reviews__text">
-                        A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.
-                        The building is green and from 18th century.
-                      </p>
-                      <time className="reviews__time" dateTime="2019-04-24">April 2019</time>
-                    </div>
-                  </li>
-                </ul>
+                <h2 className="reviews__title">
+                  Reviews &middot; <span className="reviews__amount">{reviews.length}</span>
+                </h2>
+                <ReviewList reviews={reviews}/>
                 <CommentForm />
               </section>
             </div>
           </div>
-          <section className="offer__map map"></section>
+          <section className="offer__map map">
+            <Map city={offers[0].city} points={offers.slice(0, 3)} activeOfferId={0} isMainPage={false}/>
+          </section>
         </section>
         <div className="container">
           <section className="near-places places">

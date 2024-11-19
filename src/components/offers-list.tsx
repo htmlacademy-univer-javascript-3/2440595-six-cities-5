@@ -1,11 +1,13 @@
 import {OffersListProps} from '../props/offers-list-props.tsx';
 import {PlaceCard} from './place-card.tsx';
 
-export function OffersList({ offers }: OffersListProps) {
+export function OffersList({ offers, listType, setActiveOfferId }: OffersListProps) {
+  const baseClass = 'places__list';
+  const additionalClass = listType === 'default' ? 'cities__places-list tabs__content' : 'near-places__list';
   return (
-    <div className="cities__places-list places__list tabs__content">
+    <div className={`${additionalClass} ${baseClass}`}>
       {offers.map((offer) => (
-        <PlaceCard key={offer.id} offer={offer} />
+        <PlaceCard key={offer.id} offer={offer} cardType={listType} setActiveOfferId={setActiveOfferId}/>
       ))}
     </div>
   );
