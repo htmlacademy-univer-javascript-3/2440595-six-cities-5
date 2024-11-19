@@ -7,6 +7,6 @@ interface AuthorizationProps {
 }
 
 export function Authorization(props: AuthorizationProps): React.JSX.Element {
-  const { isAuthorized, children} = props;
+  const { isAuthorized, children } = props;
   return isAuthorized ? children : <Navigate to={AppRoutesProps.LoginPage} />;
 }
