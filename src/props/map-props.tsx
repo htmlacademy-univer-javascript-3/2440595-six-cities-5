@@ -1,6 +1,9 @@
 import {Offer} from '../internal/types/offer-type.tsx';
+import {City} from '../internal/types/city.tsx';
 
 export type MapProps = {
-  offers: Offer[];
-  selectedOffer: Offer;
+  city: City;
+  points: Offer[];
+  activeOfferId: number;
+  isMainPage: boolean;
 };
