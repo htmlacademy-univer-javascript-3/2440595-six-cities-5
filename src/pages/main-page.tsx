@@ -4,20 +4,38 @@ import { OffersList } from '../components/offers-list.tsx';
 import { Map } from '../components/map.tsx';
 import { Logo } from '../components/logo.tsx';
 import { useState, useEffect } from 'react';
-import {useAppSelector} from '../store/hooks.ts';
-import {Offer} from '../internal/types/offer-type.tsx';
-import {CityList} from '../components/city-list.tsx';
-import {Cities} from '../const.ts';
+import { useAppDispatch, useAppSelector } from '../store/hooks.ts';
+import { Offer } from '../internal/types/offer-type.tsx';
+import { CityList } from '../components/city-list.tsx';
+import { Cities } from '../const.ts';
+import { SortOption } from '../internal/enums/sort-option-enum.tsx';
+import { SortOptions } from '../components/sort-options.tsx';
+import { setSortOption } from '../store/actions.ts';
 
 export function MainPage({favorites}: MainPageProps): React.JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState(0);
   const offers = useAppSelector((state) => state.offers);
   const city = useAppSelector((state) => state.city);
   const [currentCityOffers, setCurrentCityOffers] = useState<Offer[]>(offers);
+  const sortOption = useAppSelector((state) => state.sortOption);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     const filteredOffers = offers.filter((offer) => offer.city.name === city.name);
+    switch (sortOption) {
+      case SortOption.PriceLowToHigh:
+        filteredOffers.sort((first, second) => first.price - second.price);
+        break;
+      case SortOption.PriceHighToLow:
+        filteredOffers.sort((first, second) => second.price - first.price);
+        break;
+      case SortOption.TopRatedFirst:
+        filteredOffers.sort((first, second) => second.rating - first.rating);
+        break;
+      default:
+        break;
+    }
     setCurrentCityOffers(filteredOffers);
-  }, [city, offers]);
+  }, [city, offers, sortOption]);
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -47,7 +65,7 @@ export function MainPage({favorites}: MainPageProps): React.JSX.Element {
         </div>
       </header>
 
-      <main className="page__main page__main--index">
+      <main className={`page__main page__main--index ${currentCityOffers.length === 0 ? 'page__main--index-empty' : ''}`}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
@@ -59,21 +77,11 @@ export function MainPage({favorites}: MainPageProps): React.JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{`${currentCityOffers.length} places to stay in ${city.name}`}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">f
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
+              <SortOptions
+                onSortChange={(option: SortOption) => {
+                  dispatch(setSortOption(option));
+                }}
+              />
               <OffersList offers={currentCityOffers} listType={'default'} setActiveOfferId={setActiveOfferId}/>
             </section>
             <div className="cities__right-section">

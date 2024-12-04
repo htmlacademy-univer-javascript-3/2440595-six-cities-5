@@ -9,26 +9,50 @@ export const URL_MARKER_CURRENT =
 export const Cities = [
   {
     name: CityName.Paris,
-    id: 1,
+    location: {
+      lat: 48.856663,
+      lon: 2.351556,
+      zoom: 10
+    }
   },
   {
     name: CityName.Cologne,
-    id: 2,
+    location: {
+      lat: 50.930779,
+      lon: 6.938399,
+      zoom: 10
+    }
   },
   {
     name: CityName.Brussels,
-    id: 3,
+    location: {
+      lat: 50.846697,
+      lon: 4.352544,
+      zoom: 10
+    }
   },
   {
     name: CityName.Amsterdam,
-    id: 4,
+    location: {
+      lat: 52.374,
+      lon: 4.88969,
+      zoom: 10
+    }
   },
   {
     name: CityName.Hamburg,
-    id: 5,
+    location: {
+      lat: 53.550688,
+      lon:  9.992895,
+      zoom: 10
+    }
   },
   {
     name: CityName.Dusseldorf,
-    id: 6,
+    location: {
+      lat: 51.230569,
+      lon:  6.787428,
+      zoom: 10
+    }
   },
 ];

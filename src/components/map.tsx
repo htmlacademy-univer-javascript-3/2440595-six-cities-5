@@ -56,7 +56,6 @@ export function Map({ city, points, activeOfferId, isMainPage }: MapProps){
     <section
       className={isMainPage ? MapClasses.SectionPropertyMapClass : MapClasses.SectionMainMapClass}
       ref={mapRef}
-      key={city.name}
     >
     </section>
   );
