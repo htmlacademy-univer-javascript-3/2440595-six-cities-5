@@ -13,7 +13,7 @@ export function CityList({cities}: CityListProps): JSX.Element {
     <ul className="locations__list tabs__list">
       {cities.map((city) => (
         <City
-          key={city.id}
+          key={city.name}
           name={city.name}
           cityChangeName={handleCityChange}
         />
