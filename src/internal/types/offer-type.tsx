@@ -7,15 +7,20 @@ export type Offer = {
   rating: number;
   type: PlaceType;
   price: number;
-  imageUrl: string;
+  previewImage: string;
   isPremium: boolean;
   isBookmarked: boolean;
   isFavorite: boolean;
+  location: {
+    latitude: number;
+    longitude: number;
+    zoom: number;
+  };
   city: {
     name: CityName;
     location: {
-      lat: number;
-      lon: number;
+      latitude: number;
+      longitude: number;
       zoom: number;
     };
   };

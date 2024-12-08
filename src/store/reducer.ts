@@ -1,22 +1,32 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {offers} from '../mocks/offers.ts';
-import {changeCity, fillCityOffersList, setSortOption} from './actions.ts';
+import {
+  changeCity,
+  fetchOffers,
+  fillCityOffersList,
+  setAuthStatus, setError,
+  setIsFetchOffers,
+  setSortOption
+} from './actions.ts';
 import {CityName} from '../internal/enums/city-name-enum.tsx';
 import {CityOfferListType} from '../internal/types/city-offer-list-type.tsx';
 import {SortOption} from '../internal/enums/sort-option-enum.tsx';
 import {Cities} from '../const.ts';
+import {AuthStatus} from '../internal/enums/auth-status-enum.tsx';
 
 export const InitialCityState: CityOfferListType = {
   city: {
     name: CityName.Paris,
     location: {
-      lat: 48.8566,
-      lon: 2.3522,
+      latitude: 48.8566,
+      longitude: 2.3522,
       zoom: 10
     }
   },
-  offers: offers,
-  sortOption: SortOption.Popular
+  offers: [],
+  sortOption: SortOption.Popular,
+  authStatus: AuthStatus.Unknown,
+  isFetchOffers: false,
+  error: null,
 };
 
 export const reducer = createReducer(InitialCityState, (builder) => {
@@ -33,5 +43,17 @@ export const reducer = createReducer(InitialCityState, (builder) => {
     })
     .addCase(setSortOption, (state, { payload }) => {
       state.sortOption = payload;
+    })
+    .addCase(fetchOffers, (state, {payload}) => {
+      state.offers = payload;
+    })
+    .addCase(setAuthStatus, (state, action) => {
+      state.authStatus = action.payload;
+    })
+    .addCase(setIsFetchOffers, (state, action) => {
+      state.isFetchOffers = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
     });
 });

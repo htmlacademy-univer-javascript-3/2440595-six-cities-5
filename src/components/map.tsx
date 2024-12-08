@@ -32,8 +32,8 @@ export function Map({ city, points, activeOfferId, isMainPage }: MapProps){
       });
       points.forEach((offer: Offer) => {
         const marker = new Marker({
-          lat: offer.city.location.lat,
-          lng: offer.city.location.lon
+          lat: offer.location.latitude,
+          lng: offer.location.longitude
         });
         marker
           .setIcon(
@@ -48,7 +48,7 @@ export function Map({ city, points, activeOfferId, isMainPage }: MapProps){
 
   useEffect(() => {
     if (map) {
-      map.flyTo([city.location.lat, city.location.lon], city.location.zoom);
+      map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom);
     }
   }, [map, city]);
 
