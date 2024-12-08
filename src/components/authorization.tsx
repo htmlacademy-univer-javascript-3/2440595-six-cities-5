@@ -1,12 +1,13 @@
 import { Navigate } from 'react-router-dom';
 import { AppRoutesProps } from '../props/app-routes-props.tsx';
+import {AuthStatus} from '../internal/enums/auth-status-enum.tsx';
 
 interface AuthorizationProps {
-  isAuthorized: boolean;
+  authStatus: AuthStatus;
   children: React.JSX.Element;
 }
 
 export function Authorization(props: AuthorizationProps): React.JSX.Element {
-  const { isAuthorized, children } = props;
-  return isAuthorized ? children : <Navigate to={AppRoutesProps.LoginPage} />;
+  const { authStatus, children } = props;
+  return authStatus === AuthStatus.Auth ? children : <Navigate to={AppRoutesProps.LoginPage} />;
 }

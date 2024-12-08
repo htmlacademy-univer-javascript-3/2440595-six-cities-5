@@ -4,9 +4,10 @@ import { Logo } from '../components/logo.tsx';
 import {OfferPageProps} from '../props/offer-page-props.tsx';
 import {ReviewList} from '../components/review-list.tsx';
 import {Map} from '../components/map.tsx';
-import {offers} from '../mocks/offers.ts';
+import {useAppSelector} from '../store/hooks.ts';
 
 export function OfferPage({reviews}: OfferPageProps): React.JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
   return (
     <div className="page">
       <header className="header">

@@ -24,7 +24,7 @@ export function PlaceCard({ offer, type, setActiveOfferId}: PlaceCardProps): Rea
         <a href="#">
           <img
             className="place-card__image"
-            src={offer.imageUrl}
+            src={offer.previewImage}
             width="260"
             height="200"
             alt="Place image"
