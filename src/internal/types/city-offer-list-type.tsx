@@ -8,6 +8,7 @@ export type CityOfferListType = {
   offers: Offer[];
   sortOption: SortOption;
   authStatus: AuthStatus;
+  favoriteOffers: Offer[];
   isFetchOffers: boolean;
   error: string | null;
 }

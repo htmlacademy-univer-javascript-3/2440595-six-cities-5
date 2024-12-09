@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { AppRoutesProps } from '../props/app-routes-props.tsx';
+import { AppRouteEnum } from '../internal/enums/app-route-enum.tsx';
 import {AuthStatus} from '../internal/enums/auth-status-enum.tsx';
 
 interface AuthorizationProps {
@@ -9,5 +9,5 @@ interface AuthorizationProps {
 
 export function Authorization(props: AuthorizationProps): React.JSX.Element {
   const { authStatus, children } = props;
-  return authStatus === AuthStatus.Auth ? children : <Navigate to={AppRoutesProps.LoginPage} />;
+  return authStatus === AuthStatus.Auth ? children : <Navigate to={AppRouteEnum.LoginPage} />;
 }

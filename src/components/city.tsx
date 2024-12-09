@@ -1,4 +1,9 @@
-import {CityProps} from '../pages/city-props.tsx';
+import {CityName} from '../internal/enums/city-name-enum.tsx';
+
+type CityProps = {
+  name: CityName;
+  cityChangeName: (city: CityName) => void;
+};
 
 export const City = ({name, cityChangeName}: CityProps): JSX.Element => (
   <li className="locations__item" onClick={() => cityChangeName(name)}>

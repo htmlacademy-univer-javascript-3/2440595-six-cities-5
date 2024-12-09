@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import { AppRoutesProps } from '../props/app-routes-props.tsx';
+import { AppRouteEnum } from '../internal/enums/app-route-enum.tsx';
 
 export function Logo() {
   return(
-    <Link className="header__logo-link header__logo-link--active" to={AppRoutesProps.MainPage}>
+    <Link className="header__logo-link header__logo-link--active" to={AppRouteEnum.MainPage}>
       <img
         className="header__logo"
         src="img/logo.svg"

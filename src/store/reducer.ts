@@ -23,6 +23,7 @@ export const InitialCityState: CityOfferListType = {
     }
   },
   offers: [],
+  favoriteOffers: [],
   sortOption: SortOption.Popular,
   authStatus: AuthStatus.Unknown,
   isFetchOffers: false,
