@@ -6,11 +6,9 @@ import {AppRouteEnum} from '../internal/enums/app-route-enum.tsx';
 import {Logo} from './logo.tsx';
 
 export function Header(): JSX.Element {
-  const offers =
-    useAppSelector((state) => state.offers);
-  console.log(offers);
-  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
-  console.log(favoriteOffers);
+  const favoriteOffers =
+    useAppSelector((state) => state.offers)
+      .filter((offer) => offer.isFavorite);
   const isAuthorized =
     useAppSelector((state) => state.authStatus) ===
     AuthStatus.Auth;
