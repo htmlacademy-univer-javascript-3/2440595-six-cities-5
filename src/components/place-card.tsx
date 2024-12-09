@@ -1,5 +1,11 @@
-import { PlaceCardProps } from '../props/place-card-props.tsx';
 import {Link} from 'react-router-dom';
+import {Offer} from '../internal/types/offer-type.tsx';
+
+type PlaceCardProps = {
+  offer: Offer;
+  type: 'default' | 'near';
+  setActiveOfferId: (id: number) => void;
+}
 
 export function PlaceCard({ offer, type, setActiveOfferId}: PlaceCardProps): React.JSX.Element {
   const placeCardClass = type === 'default' ? 'cities__card place-card' : 'near-places__card place-card';

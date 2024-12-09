@@ -11,3 +11,4 @@ export const setAuthStatus = createAction<AuthStatus>('SetAuthStatus');
 export const setError = createAction<string | null>('SetError');
 export const fetchOffers = createAction<Offer[]>('FetchOffers');
 export const setIsFetchOffers = createAction<boolean>('SetIsFetchOffers');
+export const redirectToRoute = createAction<string>('RedirectToRoute');

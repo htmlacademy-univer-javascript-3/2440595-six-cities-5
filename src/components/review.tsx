@@ -1,4 +1,8 @@
-import {ReviewProps} from '../props/review-props.tsx';
+import {ReviewType} from '../internal/types/review-type.tsx';
+
+type ReviewProps = {
+  review: ReviewType;
+};
 
 export function Review({ review }: ReviewProps) {
   const { id, date, user, rating, comment } = review;

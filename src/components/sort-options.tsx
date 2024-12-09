@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { SortOption } from '../internal/enums/sort-option-enum.tsx';
-import { SortOptionsProps } from '../props/sort-options-props.tsx';
+
+type SortOptionsProps = {
+  onSortChange: (option: SortOption) => void;
+}
 
 export function SortOptions({ onSortChange }: SortOptionsProps): JSX.Element {
   const [selectedOption, setSelectedOption] = useState(SortOption.Popular);

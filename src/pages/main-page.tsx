@@ -1,8 +1,6 @@
 import React from 'react';
-import { MainPageProps } from '../props/main-page-props.tsx';
 import { OffersList } from '../components/offers-list.tsx';
 import { Map } from '../components/map.tsx';
-import { Logo } from '../components/logo.tsx';
 import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks.ts';
 import { Offer } from '../internal/types/offer-type.tsx';
@@ -11,8 +9,9 @@ import { Cities } from '../const.ts';
 import { SortOption } from '../internal/enums/sort-option-enum.tsx';
 import { SortOptions } from '../components/sort-options.tsx';
 import { setSortOption } from '../store/actions.ts';
+import {Header} from '../components/header.tsx';
 
-export function MainPage({favorites}: MainPageProps): React.JSX.Element {
+export function MainPage(): React.JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState(0);
   const offers = useAppSelector((state) => state.offers);
   const city = useAppSelector((state) => state.city);
@@ -38,33 +37,7 @@ export function MainPage({favorites}: MainPageProps): React.JSX.Element {
   }, [city, offers, sortOption]);
   return (
     <div className="page page--gray page--main">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <Logo />
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">{favorites.length}</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
-
+      <Header/>
       <main className={`page__main page__main--index ${currentCityOffers.length === 0 ? 'page__main--index-empty' : ''}`}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">

@@ -1,5 +1,9 @@
 import { Review } from './review.tsx';
-import { ReviewListProps } from '../props/review-list-props.tsx';
+import {ReviewType} from '../internal/types/review-type.tsx';
+
+type ReviewListProps = {
+  reviews: ReviewType[];
+}
 
 export function ReviewList({reviews: reviewList}: ReviewListProps) {
   return (

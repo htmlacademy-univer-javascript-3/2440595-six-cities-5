@@ -1,5 +1,11 @@
-import {OffersListProps} from '../props/offers-list-props.tsx';
 import {PlaceCard} from './place-card.tsx';
+import {Offer} from '../internal/types/offer-type.tsx';
+
+type OffersListProps = {
+  offers: Offer[];
+  listType: 'default' | 'near';
+  setActiveOfferId(id:number): void;
+}
 
 export function OffersList({ offers, listType, setActiveOfferId }: OffersListProps) {
   const baseClass = 'places__list';

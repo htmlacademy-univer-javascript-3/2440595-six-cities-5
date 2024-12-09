@@ -3,9 +3,9 @@ import {Icon, Marker} from 'leaflet';
 import useMap from '../hooks/use-map.tsx';
 import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../const.ts';
 import 'leaflet/dist/leaflet.css';
-import { MapProps } from '../props/map-props.tsx';
 import {Offer} from '../internal/types/offer-type.tsx';
 import {MapClasses} from '../internal/enums/map-classes-enum.tsx';
+import {City} from '../internal/types/city.tsx';
 
 const defaultCustomIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
@@ -18,6 +18,13 @@ const currentCustomIcon = new Icon({
   iconSize: [40, 40],
   iconAnchor: [20, 40]
 });
+
+type MapProps = {
+  city: City;
+  points: Offer[];
+  activeOfferId: number;
+  isMainPage: boolean;
+};
 
 export function Map({ city, points, activeOfferId, isMainPage }: MapProps){
   const mapRef = useRef(null);

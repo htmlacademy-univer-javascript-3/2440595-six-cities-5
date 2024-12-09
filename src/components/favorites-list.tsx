@@ -1,5 +1,9 @@
-import { FavoritesListProps } from '../props/favorites-list-props.tsx';
 import { PlaceCard } from './place-card.tsx';
+import {Offer} from '../internal/types/offer-type.tsx';
+
+type FavoritesListProps = {
+  favorites: Offer[];
+};
 
 export function FavoritesList({ favorites }: FavoritesListProps) {
   return (

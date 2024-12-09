@@ -1,8 +1,11 @@
 import {useAppDispatch} from '../store/hooks.ts';
 import {changeCity} from '../store/actions.ts';
 import {CityName} from '../internal/enums/city-name-enum.tsx';
-import {CityListProps} from '../props/city-list-props.tsx';
 import {City} from './city.tsx';
+
+type CityListProps = {
+  cities: { name: CityName; location: { longitude: number; latitude: number; zoom: number } }[];
+};
 
 export function CityList({cities}: CityListProps): JSX.Element {
   const dispatch = useAppDispatch();
