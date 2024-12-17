@@ -12,7 +12,7 @@ import { setSortOption } from '../store/actions.ts';
 import {Header} from '../components/header.tsx';
 
 export function MainPage(): React.JSX.Element {
-  const [activeOfferId, setActiveOfferId] = useState(0);
+  const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
   const offers = useAppSelector((state) => state.offers);
   const city = useAppSelector((state) => state.city);
   const [currentCityOffers, setCurrentCityOffers] = useState<Offer[]>(offers);
@@ -55,11 +55,11 @@ export function MainPage(): React.JSX.Element {
                   dispatch(setSortOption(option));
                 }}
               />
-              <OffersList offers={currentCityOffers} listType={'default'} setActiveOfferId={setActiveOfferId}/>
+              <OffersList offers={currentCityOffers} listType={'default'} activeOfferChange={setActiveOffer}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={city} points={currentCityOffers} activeOfferId={activeOfferId} isMainPage/>
+                <Map city={city} points={currentCityOffers} activeOfferId={activeOffer?.id} isMainPage/>
               </section>
             </div>
           </div>

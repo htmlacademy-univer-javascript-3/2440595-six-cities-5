@@ -3,9 +3,10 @@ import {Icon, Marker} from 'leaflet';
 import useMap from '../hooks/use-map.tsx';
 import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../const.ts';
 import 'leaflet/dist/leaflet.css';
-import {Offer} from '../internal/types/offer-type.tsx';
 import {MapClasses} from '../internal/enums/map-classes-enum.tsx';
 import {City} from '../internal/types/city.tsx';
+import {Point} from '../internal/types/point.tsx';
+import {Offer} from '../internal/types/offer-type.tsx';
 
 const defaultCustomIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
@@ -21,12 +22,12 @@ const currentCustomIcon = new Icon({
 
 type MapProps = {
   city: City;
-  points: Offer[];
-  activeOfferId: number;
+  points: Point[] | Offer[];
+  activeOfferId: number | undefined;
   isMainPage: boolean;
 };
 
-export function Map({ city, points, activeOfferId, isMainPage }: MapProps){
+export function Map({ city, points, activeOfferId, isMainPage}: MapProps){
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
@@ -37,14 +38,15 @@ export function Map({ city, points, activeOfferId, isMainPage }: MapProps){
           map.removeLayer(layer);
         }
       });
-      points.forEach((offer: Offer) => {
+      points.forEach((point) => {
         const marker = new Marker({
-          lat: offer.location.latitude,
-          lng: offer.location.longitude
+          lat: point.location.latitude,
+          lng: point.location.longitude
         });
+
         marker
           .setIcon(
-            offer.id === activeOfferId
+            point.id === activeOfferId
               ? currentCustomIcon
               : defaultCustomIcon
           )

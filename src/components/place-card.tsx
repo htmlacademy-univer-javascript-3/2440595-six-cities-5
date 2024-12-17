@@ -4,23 +4,12 @@ import {Offer} from '../internal/types/offer-type.tsx';
 type PlaceCardProps = {
   offer: Offer;
   type: 'default' | 'near';
-  setActiveOfferId: (id: number) => void;
 }
 
-export function PlaceCard({ offer, type, setActiveOfferId}: PlaceCardProps): React.JSX.Element {
+export function PlaceCard({offer, type}: PlaceCardProps): React.JSX.Element {
   const placeCardClass = type === 'default' ? 'cities__card place-card' : 'near-places__card place-card';
-  const handleMouseEnter = () => {
-    if (setActiveOfferId) {
-      setActiveOfferId(offer.id);
-    }
-  };
-  const handleMouseLeave = () => {
-    if (setActiveOfferId) {
-      setActiveOfferId(0);
-    }
-  };
   return (
-    <article className={`${placeCardClass}`} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <article className={`${placeCardClass}`}>
       {offer.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
