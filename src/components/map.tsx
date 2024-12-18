@@ -23,7 +23,7 @@ const currentCustomIcon = new Icon({
 type MapProps = {
   city: City;
   points: Point[] | Offer[];
-  activeOfferId: number | undefined;
+  activeOfferId: string | undefined;
   isMainPage: boolean;
 };
 

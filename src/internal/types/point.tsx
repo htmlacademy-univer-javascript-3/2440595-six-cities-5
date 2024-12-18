@@ -1,6 +1,6 @@
 import { Location } from './location.tsx';
 
 export type Point = {
-  id: number;
+  id: string;
   location: Location;
 }

@@ -4,16 +4,19 @@ import {ReviewList} from '../components/review-list.tsx';
 import {Map} from '../components/map.tsx';
 import {useAppDispatch, useAppSelector} from '../store/hooks.ts';
 import {Header} from '../components/header.tsx';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {Point} from '../internal/types/point.tsx';
-import {getOfferInfoAction} from '../store/api-actions.ts';
+import {addFavouriteAction, getOfferInfoAction} from '../store/api-actions.ts';
 import {AuthStatus} from '../internal/enums/auth-status-enum.tsx';
 import {OffersList} from '../components/offers-list.tsx';
 import {NotFoundPage} from './not-found-page.tsx';
+import {APIRoute} from '../internal/enums/api-route-enum.tsx';
 
 export function OfferPage(): React.JSX.Element {
   const { id } = useParams<{ id: string }>();
   const user = useAppSelector((state) => state.authStatus);
+  const navigate = useNavigate();
+  const authStatus = useAppSelector((state) => state.authStatus);
   const { selectedOffer, nearbyOffers, reviews } = useAppSelector(({ currentOffer }) => ({
     selectedOffer: currentOffer.offerInfo,
     nearbyOffers: currentOffer.nearestOffers,
@@ -33,7 +36,7 @@ export function OfferPage(): React.JSX.Element {
     }
   }, [dispatch, id]);
   if (!selectedOffer) {
-    return <div className="container"> element={<NotFoundPage />} </div>;
+    return <NotFoundPage />;
   }
   return (
     <div className="page">
@@ -62,7 +65,19 @@ export function OfferPage(): React.JSX.Element {
                 <h1 className="offer__name">
                   {selectedOffer.title}
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
+                <button className={
+                  selectedOffer.isFavorite
+                    ? 'offer__bookmark-button offer__bookmark-button--active button'
+                    : 'offer__bookmark-button button'
+                } type="button"
+                onClick={() => {
+                  if (authStatus !== AuthStatus.Auth) {
+                    navigate(APIRoute.Login);
+                  }
+
+                  dispatch(addFavouriteAction({offerId: selectedOffer.id, status: selectedOffer.isFavorite ? 0 : 1}));
+                }}
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>

@@ -70,6 +70,18 @@ export const sendReviewAction = createAsyncThunk<
   dispatch(sendReview(review));
 });
 
+export const addFavouriteAction = createAsyncThunk<DetailedOffer, {offerId: string | undefined; status: 0 | 1}, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'user/addFavourite',
+  async ({offerId, status}, {extra: api}) => {
+    const {data} = await api.post<DetailedOffer>(`/favorite/${offerId}/${status}`);
+    return data;
+  }
+);
+
 export const checkAuth = createAsyncThunk<
   void,
   undefined,

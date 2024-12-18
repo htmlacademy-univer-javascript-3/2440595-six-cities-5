@@ -2,7 +2,7 @@ import { PlaceType } from '../enums/place-type-enum.tsx';
 import { CityName } from '../enums/city-name-enum.tsx';
 
 export type Offer = {
-  id: number;
+  id: string;
   title: string;
   rating: number;
   type: PlaceType;
