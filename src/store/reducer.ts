@@ -2,7 +2,7 @@ import {createReducer} from '@reduxjs/toolkit';
 import {
   changeCity,
   fetchOffers,
-  fillCityOffersList,
+  fillCityOffersList, getOfferInfo, sendReview,
   setAuthStatus, setError,
   setIsFetchOffers,
   setSortOption
@@ -28,6 +28,11 @@ export const InitialCityState: CityOfferListType = {
   authStatus: AuthStatus.Unknown,
   isFetchOffers: false,
   error: null,
+  currentOffer: {
+    offerInfo: null,
+    nearestOffers: [],
+    reviews: [],
+  },
 };
 
 export const reducer = createReducer(InitialCityState, (builder) => {
@@ -47,6 +52,12 @@ export const reducer = createReducer(InitialCityState, (builder) => {
     })
     .addCase(fetchOffers, (state, {payload}) => {
       state.offers = payload;
+    })
+    .addCase(getOfferInfo, (state, { payload }) => {
+      state.currentOffer = { ...payload };
+    })
+    .addCase(sendReview, (state, { payload }) => {
+      state.currentOffer.reviews = [...state.currentOffer.reviews, payload];
     })
     .addCase(setAuthStatus, (state, action) => {
       state.authStatus = action.payload;

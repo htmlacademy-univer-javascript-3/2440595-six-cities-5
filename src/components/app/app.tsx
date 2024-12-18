@@ -12,13 +12,8 @@ import {useAppSelector} from '../../store/hooks.ts';
 import {Spinner} from '../spinner/spinner.tsx';
 import {HistoryRouter} from '../history-router/history-router.tsx';
 import {browserHistory} from '../../browser-history/browser-history.ts';
-import {ReviewType} from '../../internal/types/review-type.tsx';
 
-type AppProps = {
-  reviews: ReviewType[];
-}
-
-export function App({reviews}: AppProps): React.JSX.Element {
+export function App(): React.JSX.Element {
   const authStatus = useAppSelector((state) => state.authStatus);
   const isFetchOffers = useAppSelector((state) => state.isFetchOffers);
 
@@ -38,7 +33,7 @@ export function App({reviews}: AppProps): React.JSX.Element {
               </Authorization>
             }
           />
-          <Route path={AppRouteEnum.OfferPage} element={<OfferPage reviews={reviews}/>} />
+          <Route path={AppRouteEnum.OfferPage} element={<OfferPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </HistoryRouter>

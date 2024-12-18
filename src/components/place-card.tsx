@@ -1,26 +1,23 @@
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {Offer} from '../internal/types/offer-type.tsx';
+import React from 'react';
+import {useAppDispatch, useAppSelector} from '../store/hooks.ts';
+import {AuthStatus} from '../internal/enums/auth-status-enum.tsx';
+import {APIRoute} from '../internal/enums/api-route-enum.tsx';
+import {addFavouriteAction} from '../store/api-actions.ts';
 
 type PlaceCardProps = {
   offer: Offer;
   type: 'default' | 'near';
-  setActiveOfferId: (id: number) => void;
 }
 
-export function PlaceCard({ offer, type, setActiveOfferId}: PlaceCardProps): React.JSX.Element {
+export function PlaceCard({offer, type}: PlaceCardProps): React.JSX.Element {
   const placeCardClass = type === 'default' ? 'cities__card place-card' : 'near-places__card place-card';
-  const handleMouseEnter = () => {
-    if (setActiveOfferId) {
-      setActiveOfferId(offer.id);
-    }
-  };
-  const handleMouseLeave = () => {
-    if (setActiveOfferId) {
-      setActiveOfferId(0);
-    }
-  };
+  const authStatus = useAppSelector((state) => state.authStatus);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   return (
-    <article className={`${placeCardClass}`} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <article className={`${placeCardClass}`}>
       {offer.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
@@ -43,14 +40,23 @@ export function PlaceCard({ offer, type, setActiveOfferId}: PlaceCardProps): Rea
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button
-            className="place-card__bookmark-button place-card__bookmark-button--active button"
-            type="button"
+          <button className={
+            offer.isFavorite
+              ? 'place-card__bookmark-button place-card__bookmark-button--active button'
+              : 'place-card__bookmark-button button'
+          } type="button"
+          onClick={() => {
+            if (authStatus !== AuthStatus.Auth) {
+              navigate(APIRoute.Login);
+            }
+
+            dispatch(addFavouriteAction({offerId: offer.id, status: offer.isFavorite ? 0 : 1}));
+          }}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
-              {offer.isFavorite && <use xlinkHref="#icon-bookmark"></use>}
+              <use xlinkHref="#icon-bookmark"></use>
             </svg>
-            <span className="visually-hidden">In bookmarks</span>
+            <span className="visually-hidden">To bookmarks</span>
           </button>
         </div>
         <div className="place-card__rating rating">

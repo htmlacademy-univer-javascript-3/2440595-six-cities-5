@@ -9,12 +9,7 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
   return (
     <div className="favorites__places">
       {favorites.map((favorite) => (
-        <PlaceCard key={favorite.id} offer={favorite} type={'default'} setActiveOfferId={
-          function (): void {
-            throw new Error('Function not implemented.');
-          }
-        }
-        />
+        <PlaceCard key={favorite.id} offer={favorite} type={'default'} />
       ))}
     </div>
   );

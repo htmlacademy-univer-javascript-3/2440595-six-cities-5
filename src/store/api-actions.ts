@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import {fetchOffers, redirectToRoute, setAuthStatus, setError} from './actions.ts';
+import {fetchOffers, getOfferInfo, redirectToRoute, sendReview, setAuthStatus, setError} from './actions.ts';
 import {APIRoute} from '../internal/enums/api-route-enum.tsx';
 import {setIsFetchOffers} from './actions.ts';
 import {Offer} from '../internal/types/offer-type.tsx';
@@ -10,6 +10,9 @@ import {AuthInfo} from '../internal/types/auth-info.tsx';
 import {UserAuthInfo} from '../internal/types/user-auth-info.tsx';
 import {removeToken, setToken} from '../api/token.ts';
 import {AppRouteEnum} from '../internal/enums/app-route-enum.tsx';
+import {DetailedOffer} from '../internal/types/detailed-offer-type.tsx';
+import {ReviewType} from '../internal/types/review-type.tsx';
+import {CommentInfo} from '../internal/types/comment-info.tsx';
 
 export type AppDispatch = typeof store.dispatch;
 export type State = ReturnType<typeof store.getState>;
@@ -19,7 +22,7 @@ export const getOffers = createAsyncThunk<void, undefined, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'getOffers',
+  'offer/getOffers',
   async (_, { dispatch, extra: api }) => {
     dispatch(setIsFetchOffers(true));
     try {
@@ -28,6 +31,54 @@ export const getOffers = createAsyncThunk<void, undefined, {
     } finally {
       dispatch(setIsFetchOffers(false));
     }
+  }
+);
+
+export const getOfferInfoAction = createAsyncThunk<
+  void,
+  {
+    id: string;
+  },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('offer/getOfferInfoAction', async ({ id }, { dispatch, extra: api }) => {
+  const { data: offerInfo } = await api.get<DetailedOffer>(
+    `${APIRoute.Offers}/${id}`
+  );
+  const { data: nearestOffers } = await api.get<Offer[]>(
+    `${APIRoute.Offers}/${id}/nearby`
+  );
+  const { data: reviews } = await api.get<ReviewType[]>(
+    `${APIRoute.Comments}/${id}`
+  );
+  dispatch(getOfferInfo({ offerInfo, nearestOffers, reviews }));
+});
+
+export const sendReviewAction = createAsyncThunk<
+  void,
+  { comment: CommentInfo; id: string },
+  { dispatch: AppDispatch; state: State; extra: AxiosInstance }
+>('review/sendReviewAction', async ({ comment, id }, { dispatch, extra: api }) => {
+  const { data: review } = await api.post<ReviewType>(`${APIRoute.Comments}/${id}`,
+    {
+      comment: comment.comment,
+      rating: comment.rating,
+    });
+  dispatch(sendReview(review));
+});
+
+export const addFavouriteAction = createAsyncThunk<DetailedOffer, {offerId: string | undefined; status: 0 | 1}, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'user/addFavourite',
+  async ({offerId, status}, {extra: api}) => {
+    const {data} = await api.post<DetailedOffer>(`/favorite/${offerId}/${status}`);
+    return data;
   }
 );
 
