@@ -4,6 +4,14 @@ type ReviewProps = {
   review: ReviewType;
 };
 
+function getMonthYearDateFormat(dt: string): string {
+  const date = new Date(dt);
+  return date.toLocaleString('en-US', {
+    month: 'long',
+    year: 'numeric'
+  });
+}
+
 export function Review({ review }: ReviewProps) {
   const { date, user, rating, comment } = review;
   return (
@@ -29,7 +37,7 @@ export function Review({ review }: ReviewProps) {
         </div>
         <p className="reviews__text">{comment}</p>
         <time className="reviews__time" dateTime="2019-04-24">
-          {date}
+          {`${getMonthYearDateFormat(date)}`}
         </time>
       </div>
     </li>
