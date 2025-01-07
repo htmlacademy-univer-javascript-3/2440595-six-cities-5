@@ -1,43 +1,56 @@
-import React, {useEffect} from 'react';
+import React, {useMemo, useEffect} from 'react';
 import { CommentForm } from '../components/comment-form.tsx';
 import {ReviewList} from '../components/review-list.tsx';
 import {Map} from '../components/map.tsx';
 import {useAppDispatch, useAppSelector} from '../store/hooks.ts';
 import {Header} from '../components/header.tsx';
 import {useNavigate, useParams} from 'react-router-dom';
-import {Point} from '../internal/types/point.tsx';
 import {addFavouriteAction, getOfferInfoAction} from '../store/api-actions.ts';
 import {AuthStatus} from '../internal/enums/auth-status-enum.tsx';
 import {OffersList} from '../components/offers-list.tsx';
-import {NotFoundPage} from './not-found-page.tsx';
 import {APIRoute} from '../internal/enums/api-route-enum.tsx';
+import {Spinner} from '../components/spinner/spinner.tsx';
+import {NotFoundPage} from './not-found-page.tsx';
+import {selectNearbyOffers, selectOfferInfo, selectReviews} from '../store/selectors.ts';
+import {Point} from '../internal/types/point.tsx';
+import {Footer} from '../components/footer.tsx';
 
 export function OfferPage(): React.JSX.Element {
   const { id } = useParams<{ id: string }>();
-  const user = useAppSelector((state) => state.authStatus);
   const navigate = useNavigate();
-  const authStatus = useAppSelector((state) => state.authStatus);
-  const { selectedOffer, nearbyOffers, reviews } = useAppSelector(({ currentOffer }) => ({
-    selectedOffer: currentOffer.offerInfo,
-    nearbyOffers: currentOffer.nearestOffers,
-    reviews: currentOffer.reviews,
-  }));
-  const points: Point[] = nearbyOffers.map((offer) => ({
+  const dispatch = useAppDispatch();
+
+  const selectedOffer = useAppSelector(selectOfferInfo);
+  const nearbyOffers = useAppSelector(selectNearbyOffers);
+  const reviews = useAppSelector(selectReviews);
+
+  const points: Point[] = useMemo(() => nearbyOffers.map((offer) => ({
     id: offer.id,
     location: offer.location,
-  }));
-  const mapPoints: Point[] = selectedOffer
+  })), [nearbyOffers]);
+
+  const mapPoints: Point[] = useMemo(() => selectedOffer
     ? [...points.slice(0, 3), { id: selectedOffer.id, location: selectedOffer.location }]
-    : points.slice(0, 3);
-  const dispatch = useAppDispatch();
+    : points.slice(0, 3), [points, selectedOffer]);
+
+  const authStatus = useAppSelector((state) => state.authStatus);
+  const isFetchSingleOffer = useAppSelector((state) => state.isFetchSingleOffer);
+
   useEffect(() => {
     if (id) {
       dispatch(getOfferInfoAction({ id }));
     }
   }, [dispatch, id]);
+
+  if (isFetchSingleOffer) {
+    return <Spinner />;
+  }
+
+
   if (!selectedOffer) {
     return <NotFoundPage />;
   }
+
   return (
     <div className="page">
       <Header/>
@@ -86,10 +99,10 @@ export function OfferPage(): React.JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{width: `${selectedOffer.rating * 20}%`}}></span>
+                  <span style={{width: `${Math.round(selectedOffer.rating) * 20}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">{selectedOffer.rating}</span>
+                <span className="offer__rating-value rating__value">{Math.round(selectedOffer.rating)}</span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
@@ -118,7 +131,13 @@ export function OfferPage(): React.JSX.Element {
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
                   <div className={`offer__avatar-wrapper ${selectedOffer.host.isPro ? 'offer__avatar-wrapper--pro' : ''} user__avatar-wrapper`}>
-                    <img className="offer__avatar user__avatar" src={selectedOffer.host.avatar} width="74" height="74" alt="Host avatar"/>
+                    <img
+                      className="offer__avatar user__avatar"
+                      src={selectedOffer.host.avatarUrl}
+                      width="74"
+                      height="74"
+                      alt="Host avatar"
+                    />
                   </div>
                   <span className="offer__user-name">
                     {selectedOffer.host.name}
@@ -136,13 +155,11 @@ export function OfferPage(): React.JSX.Element {
                   Reviews &middot; <span className="reviews__amount">{reviews.length}</span>
                 </h2>
                 <ReviewList reviews={reviews}/>
-                {user === AuthStatus.Auth && <CommentForm id={id!} />}
+                {authStatus === AuthStatus.Auth && <CommentForm id={id!} />}
               </section>
             </div>
           </div>
-          <section className="offer__map map">
-            <Map city={selectedOffer.city} points={mapPoints} activeOfferId={selectedOffer.id} isMainPage={false}/>
-          </section>
+          <Map city={selectedOffer.city} points={mapPoints} activeOfferId={selectedOffer.id}/>
         </section>
         <div className="container">
           <section className="near-places places">
@@ -153,6 +170,7 @@ export function OfferPage(): React.JSX.Element {
           </section>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

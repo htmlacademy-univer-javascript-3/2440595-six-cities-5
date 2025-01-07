@@ -1,5 +1,5 @@
 export type UserType = {
-  avatar: string;
+  avatarUrl: string;
   name: string;
   isPro: boolean;
 };
