@@ -4,6 +4,7 @@ import {useAppDispatch, useAppSelector} from '../../store/hooks.ts';
 import {useNavigate} from 'react-router-dom';
 import {AppRouteEnum} from '../../internal/enums/app-route-enum.tsx';
 import {AuthStatus} from '../../internal/enums/auth-status-enum.tsx';
+import {setError} from '../../store/actions.ts';
 
 export function LoginForm(): JSX.Element {
   const [email, setEmail] = useState('');
@@ -16,10 +17,13 @@ export function LoginForm(): JSX.Element {
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    if (email.length > 0 && password.length > 0) {
+    if (email.length > 0 && password.length > 0 && /[a-z]/.test(password) && /[0-9]/.test(password)) {
       dispatch(
         loginAction({email, password})
       );
+    } else {
+      dispatch(setError('Password should contain at least 1 letter and digit'));
+      setTimeout(() => dispatch(setError(null)), 2000);
     }
   };
 

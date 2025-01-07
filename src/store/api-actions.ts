@@ -1,10 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import {fetchOffers, getOfferInfo, redirectToRoute, sendReview, setAuthStatus, setError} from './actions.ts';
+import {fetchOffers, redirectToRoute, sendReview, setAuthStatus, setError} from './actions.ts';
 import {APIRoute} from '../internal/enums/api-route-enum.tsx';
 import {setIsFetchOffers} from './actions.ts';
 import {Offer} from '../internal/types/offer-type.tsx';
-import {store} from './index.ts';
 import {AuthStatus} from '../internal/enums/auth-status-enum.tsx';
 import {AuthInfo} from '../internal/types/auth-info.tsx';
 import {UserAuthInfo} from '../internal/types/user-auth-info.tsx';
@@ -13,9 +12,7 @@ import {AppRouteEnum} from '../internal/enums/app-route-enum.tsx';
 import {DetailedOffer} from '../internal/types/detailed-offer-type.tsx';
 import {ReviewType} from '../internal/types/review-type.tsx';
 import {CommentInfo} from '../internal/types/comment-info.tsx';
-
-export type AppDispatch = typeof store.dispatch;
-export type State = ReturnType<typeof store.getState>;
+import { AppDispatch, State } from './index.ts';
 
 export const getOffers = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -35,27 +32,27 @@ export const getOffers = createAsyncThunk<void, undefined, {
 );
 
 export const getOfferInfoAction = createAsyncThunk<
-  void,
-  {
-    id: string;
-  },
+  { offerInfo: DetailedOffer; nearestOffers: Offer[]; reviews: ReviewType[] }, // Определяем возвращаемый тип
+  { id: string },
   {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
+    rejectValue: string;
   }
->('offer/getOfferInfoAction', async ({ id }, { dispatch, extra: api }) => {
-  const { data: offerInfo } = await api.get<DetailedOffer>(
-    `${APIRoute.Offers}/${id}`
-  );
-  const { data: nearestOffers } = await api.get<Offer[]>(
-    `${APIRoute.Offers}/${id}/nearby`
-  );
-  const { data: reviews } = await api.get<ReviewType[]>(
-    `${APIRoute.Comments}/${id}`
-  );
-  dispatch(getOfferInfo({ offerInfo, nearestOffers, reviews }));
-});
+>(
+  'offer/getOfferInfoAction',
+  async ({ id }, { extra: api, rejectWithValue }) => {
+    try {
+      const { data: offerInfo } = await api.get<DetailedOffer>(`${APIRoute.Offers}/${id}`);
+      const { data: nearestOffers } = await api.get<Offer[]>(`${APIRoute.Offers}/${id}/nearby`);
+      const { data: reviews } = await api.get<ReviewType[]>(`${APIRoute.Comments}/${id}`);
+      return { offerInfo, nearestOffers, reviews };
+    } catch (error) {
+      return rejectWithValue('Offer not found');
+    }
+  }
+);
 
 export const sendReviewAction = createAsyncThunk<
   void,
@@ -131,9 +128,9 @@ export const logoutAction = createAsyncThunk<
   dispatch(redirectToRoute(AppRouteEnum.MainPage));
 });
 
-export const deleteError = createAsyncThunk(
+export const deleteError = createAsyncThunk<void, {dispatch: AppDispatch}>(
   'deleteError',
-  () => {
-    setTimeout(() => store.dispatch(setError(null)), 2000);
+  ({ dispatch }) => {
+    setTimeout(() => dispatch(setError(null)), 2000);
   }
 );

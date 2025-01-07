@@ -30,7 +30,7 @@ export function OffersList({ offers, listType, activeOfferChange}: OffersListPro
   if (!activeOfferChange) {
     return (
       <div className={`${baseClass} ${additionalClass} `}>
-        {offers.map((offer) => (
+        {sortedOffers.map((offer) => (
           <PlaceCard key={offer.id} offer={offer} type={listType}/>
         ))}
       </div>
@@ -38,7 +38,7 @@ export function OffersList({ offers, listType, activeOfferChange}: OffersListPro
   }
   return (
     <div className={`${baseClass} ${additionalClass} `}>
-      {offers.map((offer) => (
+      {sortedOffers.map((offer) => (
         <div
           key={offer.id}
           onMouseEnter={() => activeOfferChange(offer)}

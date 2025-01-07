@@ -24,10 +24,9 @@ type MapProps = {
   city: City;
   points: Point[] | Offer[];
   activeOfferId: string | undefined;
-  isMainPage: boolean;
 };
 
-export function Map({ city, points, activeOfferId, isMainPage}: MapProps){
+export function Map({ city, points, activeOfferId}: MapProps){
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
@@ -63,7 +62,7 @@ export function Map({ city, points, activeOfferId, isMainPage}: MapProps){
 
   return (
     <section
-      className={isMainPage ? MapClasses.SectionPropertyMapClass : MapClasses.SectionMainMapClass}
+      className={MapClasses.SectionPropertyMapClass}
       ref={mapRef}
     >
     </section>

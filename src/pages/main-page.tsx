@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { OffersList } from '../components/offers-list.tsx';
 import { Map } from '../components/map.tsx';
-import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks.ts';
 import { Offer } from '../internal/types/offer-type.tsx';
 import { CityList } from '../components/city-list.tsx';
@@ -10,31 +9,21 @@ import { SortOption } from '../internal/enums/sort-option-enum.tsx';
 import { SortOptions } from '../components/sort-options.tsx';
 import { setSortOption } from '../store/actions.ts';
 import {Header} from '../components/header.tsx';
+import {MainEmptyPage} from './main-empty-page.tsx';
 
 export function MainPage(): React.JSX.Element {
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
   const offers = useAppSelector((state) => state.offers);
   const city = useAppSelector((state) => state.city);
-  const [currentCityOffers, setCurrentCityOffers] = useState<Offer[]>(offers);
-  const sortOption = useAppSelector((state) => state.sortOption);
+  const currentCityOffers = useMemo(() => offers.filter((offer) => offer.city.name === city.name), [city, offers]);
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    const filteredOffers = offers.filter((offer) => offer.city.name === city.name);
-    switch (sortOption) {
-      case SortOption.PriceLowToHigh:
-        filteredOffers.sort((first, second) => first.price - second.price);
-        break;
-      case SortOption.PriceHighToLow:
-        filteredOffers.sort((first, second) => second.price - first.price);
-        break;
-      case SortOption.TopRatedFirst:
-        filteredOffers.sort((first, second) => second.rating - first.rating);
-        break;
-      default:
-        break;
-    }
-    setCurrentCityOffers(filteredOffers);
-  }, [city, offers, sortOption]);
+
+  if (!offers) {
+    return (
+      <MainEmptyPage />
+    );
+  }
+
   return (
     <div className="page page--gray page--main">
       <Header/>
@@ -59,7 +48,7 @@ export function MainPage(): React.JSX.Element {
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={city} points={currentCityOffers} activeOfferId={activeOffer?.id} isMainPage/>
+                <Map city={city} points={currentCityOffers} activeOfferId={activeOffer?.id}/>
               </section>
             </div>
           </div>

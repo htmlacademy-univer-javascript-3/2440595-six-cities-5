@@ -12,6 +12,7 @@ export type CityOfferListType = {
   authStatus: AuthStatus;
   favoriteOffers: Offer[];
   isFetchOffers: boolean;
+  isFetchSingleOffer: boolean;
   error: string | null;
   currentOffer: {
     offerInfo: DetailedOffer | null;
