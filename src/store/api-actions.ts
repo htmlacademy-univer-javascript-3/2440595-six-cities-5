@@ -128,9 +128,9 @@ export const logoutAction = createAsyncThunk<
   dispatch(redirectToRoute(AppRouteEnum.MainPage));
 });
 
-export const deleteError = createAsyncThunk<void, {dispatch: AppDispatch}>(
+export const deleteError = createAsyncThunk<void, undefined, {dispatch: AppDispatch}>(
   'deleteError',
-  ({ dispatch }) => {
+  (_arg, { dispatch }) => {
     setTimeout(() => dispatch(setError(null)), 2000);
   }
 );
